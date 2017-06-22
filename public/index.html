@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="CartApp">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="/libraries/angular/angular.js"></script>
+	<script src="/index.js"></script>
+</head>
+  <body ng-controller="CartCtl as cartCtl">
+  	<h1>Shopping App</h1>
+     <br>
+     <br>
+  	<form name="cartForm" novalidate ng-submit="cartCtl.submit()">
+	  <select id="selectField" ng-model="cartCtl.chosen_index" ng-change="cartCtl.choiceMade()" >
+	    <option ng-repeat="i in cartCtl.inventory" value="{{$index}}">{{i}}</option>
+		</span>
+	  </select>
+	  <span ng-if="cartCtl.chosen_name.length>0">
+			Price: {{cartCtl.chosen_price|currency}}<br>
+			Qty:<input name="chosen_qty" type="number" required ng-model="cartCtl.chosen_qty">
+			Total {{cartCtl.chosen_qty * cartCtl.chosen_price | currency}}
+			<br>
+			<img ng-src="{{cartCtl.chosen_pic}}">
+			<br>
+	  </span>
+  	  <button type="button" ng-click="cartCtl.addItem()" ng-disabled="cartCtl.chosen_name.length==0">Add</button>
+  	  <button type="submit" ng-disabled="cartCtl.cart.length==0">Checkout</button>
+  	  <button type="button" ng-disabled="cartCtl.cart.length==0" ng-click="cartCtl.clear()">Clear</button>
+  	  <h1>Basket Contents</h1>
+  	  Filter: <input type="text" name="filterText" length=30 ng-model="cartCtl.filterText">
+  	  <div ng-if="cartCtl.cart.length==0"><br>Your basket is empty</div>
+  	  <div ng-repeat="elem in cartCtl.cart | filter:cartCtl.filterText track by $index">
+  	    <ul>
+  	      <li>{{elem.name}} x {{elem.qty}}  {{elem.qty*elem.price|currency}}</li>
+  	    </ul>
+  	  </div>
+  	</form >
+	<h3><code>{{cartCtl.message}}</code></h3>
+  </body>
+</html>
